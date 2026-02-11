@@ -1,0 +1,529 @@
+:root {
+    /* Color Palette */
+    --primary-bg: #ffffff;
+    --secondary-bg: #f5f5f7;
+    --text-main: #1d1d1f;
+    --text-sub: #86868b;
+    --accent-color: #49b6ed; 
+    --border-color: rgba(0, 0, 0, 0.1);
+    
+    /* Design Tokens */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+    --shadow-hover: 0 12px 24px rgba(0, 0, 0, 0.1);
+    
+    --transition-smooth: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    
+    /* Font Stack */
+    --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-mono: "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+/* Global Reset */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html {
+    font-size: clamp(16px, 1vw, 20px);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--primary-bg);
+    color: var(--text-main);
+    line-height: 1.5;
+    overflow-x: hidden;
+}
+
+a { text-decoration: none; color: inherit; }
+
+/* Main Container */
+.container {
+    width: min(1200px, 92vw, 110vh);
+    margin: 0 auto;
+    padding: 0 0 6rem 0;
+}
+
+/* --- Header Section --- */
+.header {
+    position: relative;
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-align: center;
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* Background Video */
+.background-video {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    object-fit: cover;
+    z-index: -1;
+    pointer-events: none;
+}
+
+.video-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.65);
+    z-index: 0;
+}
+
+/* --- Corner Elements (Logo & Related) --- */
+.header-corner {
+    position: absolute;
+    top: 2.5rem;
+    z-index: 10;
+    /* Flex alignment ensure they sit on the same visual line */
+    display: flex;
+    align-items: center;
+}
+
+/* Top Left: Logo */
+.header-logo {
+    top: 2.5rem;
+    left: 2.5rem;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.header-logo:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+}
+
+.header-logo img {
+    display: block;
+    width: clamp(5rem, 12vw, 12rem);
+    height: auto;
+    filter: invert(1);
+}
+
+/* Top Right: Related Research */
+.header-related {
+    top: 2.5rem;
+    right: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.header-related-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.9);
+    font-family: var(--font-sans);
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform 0.5s ease, color 0.5s ease;
+    will-change: transform;
+    backface-visibility: hidden;
+    padding: 0.5rem 1rem;
+    white-space: nowrap; 
+}
+
+.header-related-btn:hover {
+    transform: scale(1.05);
+    color: #fff;
+}
+
+.header-related-dropdown {
+    position: absolute;
+    top: 100%;
+    margin-top: 0.2rem;
+    min-width: 160px;
+    
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--radius-md);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: var(--transition-smooth);
+    
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.4rem;
+}
+
+.header-related.is-open .header-related-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.header-related-dropdown a {
+    display: block;
+    padding: 0.5rem 1.0rem;
+    color: rgba(255, 255, 255, 0.95);
+    font-size: 0.9rem;
+    text-align: center;
+    border-radius: 6px;
+    transition: background 0.5s;
+    font-weight: 400;
+    white-space: nowrap;
+}
+
+.header-related-dropdown a:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+/* Header Content */
+.header-content {
+    z-index: 1;
+    width: 90%;
+    max-width: 1600px; 
+    padding: 2rem;
+    padding-top: 8vh;
+    animation: fadeInMove 1s cubic-bezier(0.16, 1, 0.3, 1);
+    margin: 0 auto;
+}
+
+/* --- Title Typography & Layout --- */
+.title {
+    font-size: clamp(2.5rem, 3.5vw, 3.4rem);
+    font-weight: 700;
+    line-height: 1.1;
+    margin-top: 5rem;
+    margin-bottom: 2.5rem;
+    color: #f0f0f0 !important;
+    text-shadow: 0 0 20px rgba(0, 0, 0, 0.95), 0 0 40px rgba(0, 0, 0, 0.8), 2px 2px 8px rgba(0, 0, 0, 0.9), 0 0 60px rgba(0, 0, 0, 0.6);
+    /* letter-spacing: -0.025em; */
+    padding: 2rem;
+    width: 100%;
+    max-width: 95%; 
+    margin-left: auto;
+    margin-right: auto;
+    text-wrap: balance;
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+/* --- Author Layout --- */
+.authors {
+    font-size: 1.35rem;
+    font-weight: 400;
+    color: #f0f0f0 !important;
+    text-shadow: 0 0 15px rgba(0, 0, 0, 0.95), 0 0 30px rgba(0, 0, 0, 0.7), 1px 1px 6px rgba(0, 0, 0, 0.9), 0 0 45px rgba(0, 0, 0, 0.5);
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0rem;
+    /* transform: translateZ(0);
+    will-change: transform; */
+}
+
+.author-row {
+    display: block; 
+    white-space: nowrap; 
+}
+
+.authors a {
+    color: var(--accent-color);
+    border-bottom: 1px solid transparent;
+    transition: color 0.5s ease-out, border-bottom-color 0.5s ease-out;
+    will-change: color, border-bottom-color;
+}
+/* .authors a:hover { border-bottom-color: var(--accent-color); } */
+
+.institutions {
+    font-size: 1.25rem;
+    color: rgba(255, 255, 255, 0.85);
+    margin-bottom: 1rem;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.9), 0 0 16px rgba(0, 0, 0, 0.6), 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.contribution {
+    font-size: 0.95rem;
+    opacity: 0.7;
+    margin-top: 0.5rem;
+    text-shadow: 0 0 8px rgba(0, 0, 0, 0.9), 0 0 16px rgba(0, 0, 0, 0.6), 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* --- Action Buttons --- */
+.action-buttons {
+    display: flex;
+    gap: 1.2rem;
+    justify-content: center;
+    margin-top: 3.5rem;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: saturate(180%) blur(15px);
+    -webkit-backdrop-filter: saturate(180%) blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    
+    color: white;
+    padding: 0.8rem 1.5rem; 
+    border-radius: var(--radius-md);
+    
+    font-size: 1rem;
+    line-height: 1;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    
+    transition: transform 0.5s ease, background-color 0.5s ease, box-shadow 0.5s ease;
+    will-change: transform;
+    transform: translateZ(0);
+}
+
+.action-btn:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+
+.btn-icon {
+    width: 1.1em;
+    height: 1.1em;
+    filter: drop-shadow(0 1px 1px rgba(0,0,0,0.1));
+}
+
+/* --- Content Sections --- */
+.section {
+    margin-bottom: 5rem;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.section.visible { opacity: 1; transform: translateY(0); }
+
+.simple-description {
+    font-size: 1.6rem;
+    text-align: center;
+    max-width: 90%;
+    margin: 1rem auto 0rem auto;
+    font-weight: 400;
+    line-height: 1.45;
+    color: var(--text-main);
+}
+
+tt {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.92em;
+    color: inherit;
+}
+
+/* Media Card */
+.media-card {
+    background: var(--primary-bg);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition-smooth);
+    will-change: transform, box-shadow;
+    display: flex;
+    flex-direction: column;
+}
+
+.media-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    border-color: rgba(0,0,0,0.15);
+}
+
+.media-wrapper {
+    width: 100%;
+    background: var(--secondary-bg);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+    position: relative;
+}
+
+.media-wrapper img, 
+.media-wrapper video {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+    max-height: 250px;
+}
+
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--text-main);
+    letter-spacing: -0.015em;
+}
+
+.card-desc {
+    font-size: 1.05rem;
+    color: var(--text-sub);
+    line-height: 1.6;
+}
+
+.grid-single {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* BibTeX */
+.bibtex-box {
+    background: var(--secondary-bg);
+    padding: 2.5rem;
+    border-radius: var(--radius-md);
+    position: relative;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+.bibtex-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.bibtex-code {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    color: var(--text-main);
+    line-height: 1.6;
+}
+
+.copy-btn {
+    padding: 0.5rem 1.2rem;
+    border: 1px solid rgba(0,0,0,0.1);
+    background: #fff;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: 0.5s;
+    font-family: var(--font-sans);
+    color: var(--text-main);
+}
+
+.copy-btn:hover {
+    background: #fafafa;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.footer {
+    text-align: center;
+    padding: 3rem 1rem;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-sub);
+    font-size: 0.95rem;
+    background: #fafafa;
+}
+.footer a { color: var(--text-main); text-decoration: underline; }
+
+/* Animation */
+@keyframes fadeInMove {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.lazy-media {
+    opacity: 0;
+    transition: opacity 0.5s ease-out;
+}
+.lazy-media.loaded { opacity: 1; }
+
+/* --- Mobile Specific Overrides (Max-Width 768px) --- */
+@media (max-width: 768px) {
+    .header-content { padding-top: 2rem; }
+    
+    /* Title Adjustments */
+    .title {
+        font-size: 2rem; 
+        margin-bottom: 2rem;
+        max-width: 100%;
+    }
+    
+    /* Relax Author Layout */
+    .author-row {
+        white-space: normal; 
+        display: inline;
+        line-height: 1.6;
+    }
+    .authors {
+        font-size: 1.1rem;
+        display: block;
+    }
+    
+    /* Compact Buttons */
+    .action-buttons {
+        gap: 0.8rem;
+        margin-top: 2rem;
+    }
+    .action-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.95rem;
+    }
+    
+    /* Corner Adjustments */
+    .header-logo { left: 1.5rem; top: 1.5rem; }
+    .header-related { right: 1.5rem; top: 1.5rem; }
+    .header-related-btn {
+        font-size: 0.85rem; 
+    }
+    
+    /* Container & Grid */
+    .container { width: 92vw; padding-bottom: 4rem; }
+    .grid-single { gap: 2rem; }
+}
+
+/* Demo Grid */
+.demo-container {
+    width: min(1200px, 92vw);
+    margin: 0 auto 2rem auto;
+    padding: 0 2rem;
+}
+
+.demo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    width: 100%;
+}
+
+.demo-grid .media-card {
+    width: 100%;
+    max-width: 100%;
+}
+
+@media (max-width: 768px) {
+    .demo-grid {
+        grid-template-columns: 1fr;
+    }
+    .demo-container {
+        padding: 0 1rem;
+    }
+}

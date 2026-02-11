@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="General Humanoid Whole-Body Control via Pretraining and Fast Adaptation">
+  <meta property="og:title" content="FAST" />
+  <meta property="og:url" content="https://beingbeyond.github.io/FAST/" />
+  <meta name="keywords" content="Humanoid, WBC, Teleoperation">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FAST</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="images/icon/favicon.ico">
+
+  <link rel="preload" as="video" href="videos/demo_wo_title.mp4" type="video/mp4">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-FC1STJNFMS"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-FC1STJNFMS');
+  </script>
+
+  <style>
+    .video-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      /* Space out the pairs of videos */
+      width: 60%;
+      margin: 0 auto;
+      /* Center the container */
+      padding: 0 20px;
+      /* Add padding on the sides for smaller screens */
+    }
+
+    .video-two {
+      width: 48%;
+      /* Adjust width slightly for spacing */
+      margin-bottom: 20px;
+      /* Space between rows */
+    }
+
+    .video-group {
+      width: 31%;
+      /* Adjust width slightly for spacing */
+      margin-bottom: 20px;
+    }
+
+    .video-pair {
+      width: 23%;
+      /* Adjust width slightly for spacing */
+      margin-bottom: 20px;
+      /* Space between rows */
+    }
+
+    .video-pair video {
+      width: 100%;
+      /*Video itself occupies full-width of parent (.video-pair)*/
+      height: auto;
+      display: block;
+      /* Important for consistent sizing/spacing*/
+    }
+
+    .video-label {
+      text-align: center;
+      margin-top: 5px;
+    }
+
+    /* Demo Grid Styles */
+    .demo-container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto 3rem auto;
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+      width: 100%;
+    }
+
+    @media (max-width: 768px) {
+      .demo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="./css/bulma.min.css">
+  <link rel="stylesheet" href="./css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./css/index.css">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./js/fontawesome.all.min.js"></script>
+  <script src="./js/bulma-carousel.min.js"></script>
+  <script src="./js/bulma-slider.min.js"></script>
+  <script src="./js/index.js"></script>
+  <script src="./js/scripts.js"></script>
+</head>
+
+<body>
+
+
+  <section class="hero is-gray is-fullheight video" style="overflow: hidden; position:relative;">
+    <div class="hero-video" style="height: 100%; width: 177.77777778vh; min-width: 100%;min-height: 56.25vw;">
+      <video playsinline autoplay muted loop>
+        <!-- <source src="./videos/first_video.mp4" type="video/mp4"> -->
+         <source src="./videos/demo_wo_title.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="hero-video is-hidden-tablet is-inline-block-mobile"
+      style="height: 154.28571428vw; width: 100%; min-width:64.81481481vh;min-height:100%;">
+      <video playsinline autoplay muted loop>
+        <!-- <source src="./videos/first_verticle.mp4" type="video/mp4"> -->
+         <source src="./videos/demo.mp4" type="video/mp4">
+      </video>
+    </div>
+    <div class="overlay"></div>
+    <!-- Hero head: will stick at the top -->
+    <div class="hero-head is-hidden-mobile">
+      <header class="navbar">
+        <div class="container is-size-5">
+          <div class="navbar-menu">
+          <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+          <a class="navbar-item" href="">
+              <span class="icon">
+                  <i class="fas fa-home"></i>
+              </span>
+          </a>
+
+          <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">
+              Related Research
+              </a>
+              <div class="navbar-dropdown">
+              <a class="navbar-item" href="https://beingbeyond.github.io/Jaeger/">
+                  Jaeger
+              </a>
+              <a class="navbar-item" href="https://beingbeyond.github.io/BumbleBee/">
+                  BumbleBee
+              </a>
+              </div>
+          </div>
+          </div>
+
+          <div class="navbar-end">
+          <a class="navbar-item pl-4 pr-4" href="https://arxiv.org/pdf/2602.xxxxx">
+              <span class="icon" style="margin-right:5px;">
+              <img src="./images/icon/pdf.svg" alt="PDF" />
+              </span>
+              <span>Paper</span>
+          </a>
+          <a class="navbar-item  pl-4 pr-4" href="https://arxiv.org/abs/2602.xxxxx">
+              <span class="icon" style="margin-right:5px;">
+              <img src="./images/icon/arxiv.svg" alt="arXiv" />
+              </span>
+              <span>arXiv</span>
+          </a>
+          <a class="navbar-item  pl-4 pr-4" href="https://github.com/BeingBeyond/FAST">
+              <span class="icon" style="margin-right:5px;">
+              <img src="./images/icon/github.svg" alt="github" />
+              </span>
+              <span>Project</span>
+          </a>
+          </div>
+      </div>
+        </div>
+      </header>
+    </div>
+
+    <!-- Hero content: will be in the middle -->
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <h1 class="title is-1 publication-title is-size-1-mobile" style="font-size: 10rem;">
+          <link href="https://fonts.googleapis.com/css?family=Times+New+Roman" rel="stylesheet">
+          <span style="font-family: 'apple-system', Times, serif; font-weight: bold; color: #00B4FF; letter-spacing: -0.2em;">F</span>
+          <span style="font-family: 'apple-system', Times, serif; font-weight: bold; color: #00A0FF; letter-spacing: -0.2em;">A</span>
+          <span style="font-family: 'apple-system', Times, serif; font-weight: bold; color: #008CFF; letter-spacing: -0.2em;">S</span>
+          <span style="font-family: 'apple-system', Times, serif; font-weight: bold; color: #0078FF; letter-spacing: -0.2em;">T</span>
+          <!-- <span style="font-family: 'apple-system', Times, serif; font-weight: bold; color: #0064FF; letter-spacing: -0.2em;">E</span>
+          <span style="font-family: 'apple-system', Times, serif; font-weight: bold; color: #0050FF; letter-spacing: -0.2em;">R</span>
+          <span style="font-family: 'apple-system', Times, serif; font-weight: bold; color: #003CFF; letter-spacing: -0.2em;">2</span> -->
+        </h1>
+        <h1 class="subtitle is-1 publication-title is-size-3-mobile" style="font-size: 4rem; color: white;">
+          General Humanoid Whole-Body Control via Pretraining and Fast Adaptation
+        </h1>
+        <h1 class="subtitle is-1 publication-title is-size-4-mobile" style="font-size: 2rem; color: white;">
+          <br>WHU &nbsp;&nbsp; BeingBeyond &nbsp;&nbsp; PKU
+        </h1>
+        <div class="column has-text-centered is-hidden-tablet">
+          <div class="publication-links">
+            <!-- PDF Link. -->
+            <span class="link-block">
+              <a href="https://arxiv.org/pdf/2602.xxxxx" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <img src="./images/icon/pdf.svg" alt="PDF" />
+                </span>
+                <span>Paper</span>
+              </a>
+            </span>
+            <span class="link-block">
+              <a href="https://arxiv.org/abs/2602.xxxxx" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <img src="./images/icon/arxiv.svg" alt="arXiv" />
+                </span>
+                <span>arXiv</span>
+              </a>
+            </span>
+            <!-- Code Link. -->
+            <span class="link-block">
+              <a href="https://github.com/BeingBeyond/FAST" class="external-link button is-normal is-rounded is-dark">
+                <span class="icon">
+                  <img src="./images/icon/github.svg" alt="github" />
+                </span>
+                <span>Code</span>
+              </a>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title is-size-3-mobile">
+              <span style="font-size: 90%">General Humanoid Whole-Body Control via Pretraining and Fast Adaptation</span>
+            </h1>
+
+            <h1>
+              <div class="is-size-4 publication-authors is-size-5-mobile">
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=yZTtQIgAAAAJ&hl=en" target="_blank">Zepeng Wang</a><sup>1,2</sup>,</span>
+                <span class="author-block">
+                  <a href="" target="_blank">Jiangxing Wang</a><sup>2</sup>,</span>
+                <span class="author-block">
+                  <a href="" target="_blank">Shiqing Yao</a><sup>2</sup>,</span>
+                <span class="author-block">
+                  <a href="https://gloriabhsfer.github.io/" target="_blank">Yu Zhang</a><sup>2</sup>,</span>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=o0NO50kAAAAJ&hl=en" target="_blank">Ziluo Ding</a><sup>2</sup>,</span>
+                <span class="author-block">
+                  <a href="" target="_blank">Ming Yang</a><sup>2,3</sup>,</span>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=CzgGl5cAAAAJ" target="_blank">Yuxuan Wang</a><sup>2,3</sup>,</span>
+                <span class="author-block">
+                  <a href="https://scholar.google.com/citations?user=5Oc2LAEAAAAJ&hl=en" target="_blank">Haobin Jiang</a><sup>2,3</sup>,</span>
+                <span class="author-block">
+                  <a target="_blank">Chao Ma</a><sup>1</sup>,
+                </span>
+                <span class="author-block">
+                  <a target="_blank">Xiaochuan Shi</a><sup>1†</sup>,
+                </span>
+                <span class="author-block">
+                  <a href="https://z0ngqing.github.io/" target="_blank">Zongqing Lu</a><sup>2,3&sect</sup>
+              </div>
+            </h1>
+            <h1>
+              <br>
+              <div class="is-size-4 publication-authors is-size-5-mobile">
+                <span class="author-block" style="font-size: 100%"> <sup>1</sup>Wuhan University </span>&nbsp;&nbsp;&nbsp;
+                <span class="author-block" style="font-size: 100%"> <sup>2</sup>BeingBeyond </span>&nbsp;&nbsp;&nbsp;
+                <span class="author-block" style="font-size: 100%"> <sup>3</sup>Peking University </span>
+              </div>
+            </h1>
+            <h1>
+              <div class="is-size-5 publication-authors is-size-6-mobile">
+                <span class="author-block"><small><br><sup>†</sup>Corresponding Author &nbsp; <sup>&sect</sup>Project Leader</small></span>
+              </div>
+            </h1>
+
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <!-- PDF Link. -->
+                <span class="link-block">
+                  <a href="https://arxiv.org/pdf/2602.xxxxx"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                    </span>
+                    <span>Paper</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://arxiv.org/abs/2602.xxxxx"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                    </span>
+                    <span>arXiv</span>
+                  </a>
+                </span>
+                <span class="link-block">
+                  <a href="https://github.com/BeingBeyond/FAST"
+                    class="external-link button is-normal is-rounded is-dark">
+                    <span class="icon">
+                      <i class="fab fa-github"></i>
+                    </span>
+                    <span>Project</span>
+                  </a>
+                </span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <div class="demo-container" style="display: flex; justify-content: center; align-items: center;">
+    <!-- <h2 style="text-align:center; margin-bottom: 2.5rem; font-size: 2.5rem;"><b>Teleoperation</b></h2> -->
+      <div class="media-card">
+        <div class="media-wrapper">
+          <video data-src="videos/demo_wo_title.mp4" class="lazy-media content-video"></video>
+        </div>
+      </div>
+  </div>
+
+
+  <div class="demo-container">
+    <h2 style="text-align:center; margin-bottom: 2.5rem; font-size: 2.5rem;"><b>Various motion tracking demos</b></h2>
+    <div class="demo-grid">
+      <div class="media-card">
+        <div class="media-wrapper">
+          <video data-src="videos/kick_high_dynamic.mp4" class="lazy-media content-video"></video>
+        </div>
+        <h3 class="card-title"><b>High dynamic motion</b></h3>
+        <p class="card-desc">
+          <b><tt>FAST</tt></b> tracks a high-dynamic kick motion.
+        </p>
+      </div>
+      <div class="media-card">
+        <div class="media-wrapper">
+          <video data-src="videos/single_leg_jump_forward.mp4" class="lazy-media content-video"></video>
+        </div>
+        <h3 class="card-title"><b>Text-based motion</b></h3>
+        <p class="card-desc">
+          Text: <em>“person hops on one leg”</em>
+        </p>
+      </div>
+      <div class="media-card">
+        <div class="media-wrapper">
+          <video data-src="videos/spinning_kick.mp4" class="lazy-media content-video"></video>
+        </div>
+        <h3 class="card-title"><b>Text-based motion</b></h3>
+        <p class="card-desc">
+          Text: <em>“a person does a spinning kick”</em>
+        </p>
+      </div>
+      <div class="media-card">
+        <div class="media-wrapper">
+          <video data-src="videos/lovelove.mp4" class="lazy-media content-video"></video>
+        </div>
+        <h3 class="card-title"><b>Video-based motion</b></h3>
+        <p class="card-desc">
+          <b><tt>FAST</tt></b> tracks a long-horizon dance motion generated from a video.
+        </p>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="demo-container">
+    <h2 style="text-align:center; margin-bottom: 2.5rem; font-size: 2.5rem;"><b>Teleoperation demos</b></h2>
+    <div class="demo-grid">
+      <div class="media-card">
+        <div class="media-wrapper">
+          <video data-src="videos/teleop/walk_and_kick_football.mp4" class="lazy-media content-video"></video>
+        </div>
+        <h3 class="card-title"><b>Walk and kick football</b></h3>
+        <!-- <p class="card-desc">
+          <b><tt>FAST</tt></b> tracks a high-dynamic kick motion.
+        </p> -->
+      </div>
+
+      <div class="media-card">
+        <div class="media-wrapper">
+          <video data-src="videos/teleop/high_dynamic_and_kick_football.mp4" class="lazy-media content-video"></video>
+        </div>
+        <h3 class="card-title"><b>High dynamic motion</b></h3>
+        <!-- <p class="card-desc">
+          <b><tt>FAST</tt></b> tracks a high-dynamic kick motion.
+        </p> -->
+      </div>
+
+      <div class="media-card">
+        <div class="media-wrapper">
+          <video data-src="videos/teleop/taichi.mp4" class="lazy-media content-video"></video>
+        </div>
+        <h3 class="card-title"><b>Long-horizon motion <em>"Taichi"</em></b></h3>
+        <!-- <p class="card-desc">
+          <b><tt>FAST</tt></b> tracks a high-dynamic kick motion.
+        </p> -->
+      </div>
+
+      <div class="media-card">
+        <div class="media-wrapper">
+          <video data-src="videos/teleop/face2face.mp4" class="lazy-media content-video"></video>
+        </div>
+        <h3 class="card-title"><b>Play with human</b></h3>
+        <!-- <p class="card-desc">
+          <b><tt>FAST</tt></b> tracks a high-dynamic kick motion.
+        </p> -->
+      </div>
+
+      <div class="media-card">
+        <div class="media-wrapper">
+          <video data-src="videos/teleop/push_chair.mp4" class="lazy-media content-video"></video>
+        </div>
+        <h3 class="card-title"><b>Push chair</b></h3>
+        <!-- <p class="card-desc">
+          <b><tt>FAST</tt></b> tracks a high-dynamic kick motion.
+        </p> -->
+      </div>
+
+      <div class="media-card">
+        <div class="media-wrapper">
+          <video data-src="videos/teleop/grab_and_hold.mp4" class="lazy-media content-video"></video>
+        </div>
+        <h3 class="card-title"><b>Grab toys and hold basket</b></h3>
+        <!-- <p class="card-desc">
+          <b><tt>FAST</tt></b> tracks a high-dynamic kick motion.
+        </p> -->
+      </div>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="container">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-two-thirds">
+          <h2 class="title is-3 is-size-4-mobile">Abstract</h2>
+          <div class="content has-text-justified">
+            <ol type="a">
+              Learning a general whole-body controller for humanoid robots remains challenging due to the diversity of motion distributions, the difficulty of fast adaptation, and the need for robust balance in physically inconsistent or high-dynamic scenarios. Existing approaches often require task-specific training or suffer from performance degradation when adapting to new motions without access to source-domain data.
+In this paper, we present FAST, a general humanoid whole-body control framework that emphasizes <u>F</u>ast <u>A</u>daptation and <u>S</u>table motion <u>T</u>racking. FAST introduces Parseval-Guided Residual Policy Adaptation, which learns a lightweight delta action policy under orthogonality and KL constraints, enabling efficient adaptation to out-of-distribution motions while mitigating catastrophic forgetting. To further improve physical robustness, we propose Center-of-Mass-Aware Control, which incorporates CoM-related observations and objectives to enhance balance when tracking challenging or imperfect reference motions.
+Extensive experiments in simulation and real-world deployment demonstrate that FAST consistently outperforms state-of-the-art baselines in robustness, adaptation efficiency, and generalization. Our results suggest that FAST provides a practical and scalable solution for general humanoid whole-body control across heterogeneous motion distributions and deployment scenarios.
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-three-thirds">
+          <h2 class="title is-3 is-size-4-mobile" style="text-align: center">
+            Overview of 
+            <span style="font-family: 'apple-system', Times, serif; font-weight: bold; color: #00B4FF; letter-spacing: -0.2em;">F</span>
+            <span style="font-family: 'apple-system', Times, serif; font-weight: bold; color: #00A0FF; letter-spacing: -0.2em;">A</span>
+            <span style="font-family: 'apple-system', Times, serif; font-weight: bold; color: #008CFF; letter-spacing: -0.2em;">S</span>
+            <span style="font-family: 'apple-system', Times, serif; font-weight: bold; color: #0078FF; letter-spacing: -0.2em;">T</span>
+            <!-- <span style="font-family: 'apple-system', Times, serif; font-weight: bold; color: #0064FF; letter-spacing: -0.2em;">E</span>
+            <span style="font-family: 'apple-system', Times, serif; font-weight: bold; color: #0050FF; letter-spacing: -0.2em;">R</span>
+            <span style="font-family: 'apple-system', Times, serif; font-weight: bold; color: #003CFF; letter-spacing: -0.2em;">2</span> -->
+          </h2>
+
+          <div class="columns is-centered">
+            <img src="./images/FAST_Framework.png" alt="FAST" style="width: 100%;">
+          </div>
+
+          <div class="columns is-centered has-text-centered">
+            <div class="column is-three-thirds">
+              <div class="content has-text-justified">
+                <br>
+                <ol type="a">
+                  Our framework consists of three stages.
+(1) We construct a curated humanoid motion dataset via human-to-humanoid retargeting with auxiliary physical signals.
+(2) We train a general whole-body controller with a Mixture-of-Experts architecture and center-of-mass-aware control.
+(3) We perform fast adaptation via Parseval-guided residual policy learning.
+                </ol>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="BibTeX">
+    <div class="container content">
+      <h2 style="margin-left: 14%">BibTeX</h2>
+      <pre>
+<code>@article{wang2026FAST,
+title={General Humanoid Whole-Body Control via Pretraining and Fast Adaptation},
+author={Zepeng Wang and Jiangxing Wang and Shiqing Yao and Yu Zhang and Ziluo Ding and Ming Yang and Yuxuan Wang and Haobin Jiang and Zongqing Lu},
+journal={arXiv preprint arXiv:2602.xxxxx},
+year={2026}
+}</code>
+  </pre>
+    </div>
+  </section>
+
+
+  <footer class="footer">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-8">
+          <div class="content">
+            <p>
+              This website template is licensed under a <a rel="license"
+                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+                Commons Attribution-ShareAlike 4.0 International License</a> and adapted from source at <a
+                href="https://github.com/nerfies/nerfies.github.io">Nerfies</a> and <a
+                href="https://umi-on-legs.github.io/">UMI</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+
+</html>
