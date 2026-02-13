@@ -3,7 +3,7 @@
 
 [[Blog]](https://research.beingbeyond.com/fast)
 [[Website]](https://beingbeyond.github.io/FAST/)
-[[arXiv]](https://arxiv.org/abs/2602.xxxxx)
+[[arXiv]](https://arxiv.org/abs/2602.11929)
 
 [![Python Version](https://img.shields.io/badge/Python-3.10-blue.svg)]()
 [![GitHub license](https://img.shields.io/badge/MIT-blue)]()
@@ -21,7 +21,7 @@ If you find our work useful, please consider citing us!
 @article{wang2026fast,
   title={General Humanoid Whole-Body Control via Pretraining and Fast Adaptation},
   author={Zepeng Wang and Jiangxing Wang and Shiqing Yao and Yu Zhang and Ziluo Ding and Ming Yang and Yuxuan Wang and Haobin Jiang and and Chao Ma and Xiaochuan Shi and Zongqing Lu},
-  journal={arXiv preprint arXiv:2602.xxxxx},
+  journal={arXiv preprint arXiv:2602.11929},
   year={2026}
 }
 ```
